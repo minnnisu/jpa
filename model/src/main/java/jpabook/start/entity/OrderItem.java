@@ -3,6 +3,7 @@ package jpabook.start.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "ORDER_ITEM")
 public class OrderItem {
     @Id
     @GeneratedValue
@@ -24,11 +25,8 @@ public class OrderItem {
         return id;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Item getItem() {
@@ -36,6 +34,13 @@ public class OrderItem {
     }
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public int getOrderPrice() {

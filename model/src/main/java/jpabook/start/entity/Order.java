@@ -6,16 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "ORDERS")
 public class Order {
     @Id
     @GeneratedValue
+    @Column(name = "ORDER_ID")
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
@@ -23,12 +26,12 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    //==연관관계 메서드==//
     public void setMember(Member member) {
         //기존 관계 제거
         if (this.member != null) {
             this.member.getOrders().remove(this);
         }
-
         this.member = member;
         member.getOrders().add(this);
     }
@@ -42,14 +45,17 @@ public class Order {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
     public Member getMember() {
         return member;
     }
 
-    public List<OrderItem> getItems() {
+    public List<OrderItem> getOrderItems() {
         return orderItems;
     }
-    public void setItems(List<OrderItem> orderItems) {
+    public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 
@@ -65,5 +71,14 @@ public class Order {
     }
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderDate=" + orderDate +
+                ", status=" + status +
+                '}';
     }
 }
