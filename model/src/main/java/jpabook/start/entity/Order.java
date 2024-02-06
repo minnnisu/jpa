@@ -1,5 +1,7 @@
 package jpabook.start.entity;
 
+import jpabook.start.entity.OrderStatus;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,23 +10,27 @@ import java.util.List;
 @Entity
 @Table(name = "ORDERS")
 public class Order {
-    @Id
-    @GeneratedValue
+
+    @Id @GeneratedValue
     @Column(name = "ORDER_ID")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;
+    private Member member;      //주문 회원
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date orderDate;
+    @OneToOne
+    @JoinColumn(name = "DELIVERY_ID")
+    private Delivery delivery;  //배송정보
+
+    private Date orderDate;     //주문시간
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status;//주문상태
+
 
     //==연관관계 메서드==//
     public void setMember(Member member) {
@@ -41,6 +47,12 @@ public class Order {
         orderItem.setOrder(this);
     }
 
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
+
+    //Getter, Setter
     public Long getId() {
         return id;
     }
@@ -48,6 +60,7 @@ public class Order {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Member getMember() {
         return member;
     }
@@ -55,13 +68,19 @@ public class Order {
     public List<OrderItem> getOrderItems() {
         return orderItems;
     }
+
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public Delivery getDelivery() {
+        return delivery;
     }
 
     public Date getOrderDate() {
         return orderDate;
     }
+
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
@@ -69,6 +88,7 @@ public class Order {
     public OrderStatus getStatus() {
         return status;
     }
+
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
