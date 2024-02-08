@@ -1,11 +1,15 @@
-package jpabook.start.entity;
+package jpabook.start.entity.item;
+
+import jpabook.start.entity.Category;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Item {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "DTYPE")
+public abstract class Item {
     @Id
     @GeneratedValue
     @Column(name = "ITEM_ID")
